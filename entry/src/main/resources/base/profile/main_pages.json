@@ -1,0 +1,8 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/SimonSaysPage",
+    "pages/FastMathPage",
+    "pages/NumberRecallPage"
+  ]
+}
