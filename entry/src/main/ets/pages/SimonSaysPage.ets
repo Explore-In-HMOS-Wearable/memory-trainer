@@ -1,11 +1,11 @@
 import { SimonSaysViewModel } from '../viewmodel/SimonSaysViewModel'
 import { promptAction } from '@kit.ArkUI'
 import { SimonColor } from '../model/SimonColor'
-import { routerBack } from '../util/NavigationUtil'
 
-@Entry
 @Component
-struct SimonSaysPage {
+export struct SimonSaysPage {
+  @Consume('pageStack') pageStack: NavPathStack;
+
   @State private viewModel: SimonSaysViewModel = new SimonSaysViewModel(
     () => {
       promptAction.showToast({ message: '✅ Correct! Advancing to next level...' })
@@ -50,46 +50,51 @@ struct SimonSaysPage {
   }
 
   build() {
-    Column() {
-      Row() {
+    NavDestination() {
+      Column() {
+        Row() {
 
-        Button() {
-          Image($r('app.media.ic_arrow_left'))
+          Button() {
+            Image($r('app.media.ic_arrow_left'))
+              .foregroundColor(Color.Black)
+          }
+          .height(17)
+          .width(17)
+          .onClick(() => {
+            this.pageStack.pop()
+          })
+
+          Text('Simon Says')
+            .fontColor(Color.Black)
+            .fontSize(12)
+            .fontWeight(FontWeight.Bold)
+            .margin({ left: 5 })
         }
-        .height(17)
-        .width(17)
-        .onClick(() => {
-          routerBack()
-        })
-        .borderColor('#ffffffff')
-        .backgroundColor('transparent')
+        .alignItems(VerticalAlign.Center)
+        .margin({ bottom: 5 })
 
-        Text('Simon Says')
-          .fontSize(17)
-          .fontWeight(FontWeight.Bold)
-          .margin({ left: 5 })
+        Grid() {
+          this.renderButton(SimonColor.RED)
+          this.renderButton(SimonColor.GREEN)
+          this.renderButton(SimonColor.BLUE)
+          this.renderButton(SimonColor.YELLOW)
+        }
+        .columnsTemplate('1fr 1fr')
+        .rowsTemplate('1fr 1fr')
+        .height(117)
+        .width(117)
+
+        Blank()
       }
-      .alignItems(VerticalAlign.Center)
-      .margin({ bottom: 5 })
-
-      Grid() {
-        this.renderButton(SimonColor.RED)
-        this.renderButton(SimonColor.GREEN)
-        this.renderButton(SimonColor.BLUE)
-        this.renderButton(SimonColor.YELLOW)
-      }
-      .columnsTemplate('1fr 1fr')
-      .rowsTemplate('1fr 1fr')
-      .height(117)
-      .width(117)
-
-      Blank()
-    }
-    .alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.SpaceBetween)
-    .height('100%')
-    .width('100%')
-    .padding({ top: 20, bottom: 20 })
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.SpaceBetween)
+      .height('100%')
+      .width('100%')
+      .padding({ top: 20, bottom: 20 })
+    }.onReady((ctx: NavDestinationContext) => {
+      this.pageStack = ctx.pathStack;
+    })
+    .hideBackButton(true)
   }
 
   showSequence() {

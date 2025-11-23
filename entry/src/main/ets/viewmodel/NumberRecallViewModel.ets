@@ -1,3 +1,5 @@
+import { SecureRandom } from './SimonSaysViewModel'
+
 export class NumberRecallViewModel {
   sequence: number[] = []
   userInput: string = ''
@@ -19,9 +21,9 @@ export class NumberRecallViewModel {
     this.showSequence = true
   }
 
-  addDigit() {
-    const randomDigit = Math.floor(Math.random() * 10)
-    this.sequence.push(randomDigit)
+  async addDigit() {
+    const randomIndex = await SecureRandom.randomInt(10);
+    this.sequence.push(randomIndex)
   }
 
   submitAnswer() {

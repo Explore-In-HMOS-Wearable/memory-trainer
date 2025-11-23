@@ -1,9 +1,9 @@
-import { routerBack } from '../util/NavigationUtil'
 import { FastMathViewModel } from '../viewmodel/FastMathViewModel'
 
-@Entry
 @Component
-struct FastMathPage {
+export struct FastMathPage {
+  @Consume('pageStack') pageStack: NavPathStack;
+
   @State private viewModel: FastMathViewModel = new FastMathViewModel(
     () => {
       this.feedbackMessage = '✅ Correct!'
@@ -40,43 +40,50 @@ struct FastMathPage {
 
 
   build() {
-    Column() {
-      Row() {
-        Button() {
-          SymbolGlyph($r('sys.symbol.arrow_left'))
+    NavDestination() {
+      Column() {
+        Row() {
+          Button() {
+            SymbolGlyph($r('sys.symbol.arrow_left'))
+          }
+          .height(27)
+          .width(27)
+          .onClick(() => {
+            this.pageStack.pop()
+          })
+
+          Text('Fast Math')
+            .fontSize(12)
+            .fontColor(Color.Black)
+            .fontWeight(FontWeight.Bold)
+            .margin({ left: 5 })
         }
-        .backgroundColor('transparent')
-        .height(27)
-        .width(27)
-        .onClick(() => {
-          routerBack()
-        })
+        .alignItems(VerticalAlign.Center)
 
-        Text('Fast Math')
-          .fontSize(17)
-          .fontWeight(FontWeight.Bold)
-          .margin({ left: 5 })
+        if (this.feedbackMessage !== '') {
+          Text(this.feedbackMessage)
+            .fontSize(13)
+            .fontColor(Color.Black)
+            .fontColor(Color.Gray)
+            .margin({ bottom: 5 })
+        }
+
+        Text(this.viewModel.question)
+          .fontSize(22)
+          .fontColor(Color.Black)
+          .fontWeight(FontWeight.Medium)
+          .margin({ bottom: 2 })
+
+        this.renderAnswerButtons()
       }
-      .alignItems(VerticalAlign.Center)
-
-      if (this.feedbackMessage !== '') {
-        Text(this.feedbackMessage)
-          .fontSize(13)
-          .fontColor(Color.Gray)
-          .margin({ bottom: 5 })
-      }
-
-      Text(this.viewModel.question)
-        .fontSize(22)
-        .fontWeight(FontWeight.Medium)
-        .margin({ bottom: 2 })
-
-      this.renderAnswerButtons()
-    }
-    .alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.SpaceBetween)
-    .padding({ top: 20, bottom: 20 })
-    .height('100%')
-    .width('100%')
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.SpaceBetween)
+      .padding({ top: 20, bottom: 20 })
+      .height('100%')
+      .width('100%')
+    }.onReady((ctx: NavDestinationContext) => {
+      this.pageStack = ctx.pathStack;
+    })
+    .hideBackButton(true)
   }
 }
