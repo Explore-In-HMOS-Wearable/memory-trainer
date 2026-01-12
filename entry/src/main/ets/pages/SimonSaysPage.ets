@@ -8,14 +8,12 @@ export struct SimonSaysPage {
 
   @State private viewModel: SimonSaysViewModel = new SimonSaysViewModel(
     () => {
-      promptAction.showToast({ message: '✅ Correct! Advancing to next level...' })
       setTimeout(() => {
         this.viewModel.nextRound()
         this.showSequence()
       }, 800)
     },
     () => {
-      promptAction.showToast({ message: '❌ Wrong! Restarting the game.' })
       setTimeout(() => {
         this.viewModel.resetGame()
         this.showSequence()

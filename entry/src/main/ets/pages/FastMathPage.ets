@@ -21,7 +21,7 @@ export struct FastMathPage {
     }
   )
 
-  @State private feedbackMessage: string = ''
+  private feedbackMessage: string = ''
 
   @Builder
   renderAnswerButtons(): void {

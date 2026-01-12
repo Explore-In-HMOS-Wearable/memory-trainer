@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.hmosdemos.memorytrainer",
+    "bundleName": "com.hmosdemos.wearable.memory_trainer",
     "vendor": "hmosdemos",
     "versionCode": 1000000,
     "versionName": "1.0.0",
